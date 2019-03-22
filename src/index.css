@@ -12,3 +12,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.square.clicked.player1 {
+  background-color: "yellow";
+}
+
+.square.clicked.player2 {
+  background-color: "red";
+}
