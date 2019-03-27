@@ -77,6 +77,7 @@ class Gameboard extends React.Component {
     while (xPoint <= 6) {
       checkerBoardRow.push(
         <Checker
+          key={`slot-x${xPoint}-y${yPoint}`}
           xPoint={xPoint}
           yPoint={yPoint}
           onCheckerClick={this.recordCheckerClick.bind(this)}
@@ -96,7 +97,9 @@ class Gameboard extends React.Component {
 
     while (yPoint >= 0) {
       const checkerBoardRow = (
-        <div className="row">{this.getSlotsForRow(yPoint)}</div>
+        <div key={`row-${yPoint}`} className="row">
+          {this.getSlotsForRow(yPoint)}
+        </div>
       );
 
       gameBoard.push(checkerBoardRow);
