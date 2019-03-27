@@ -6,6 +6,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 code {
@@ -13,8 +16,32 @@ code {
     monospace;
 }
 
-.square.clicked.player1 {
-  background-color: "yellow";
+.gameboard {
+  margin-top: 20px;
+  width: 560px;
+  height: 480px;
+  border: 1px solid red;
+}
+
+.slot {
+  margin: 16px;
+  background-color: blue;
+  height: 48px;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checker {
+  height: 38px;
+  width: 38px;
+  border-radius: 50px;
+  background-color: white;
+}
+
+.row {
+  display: flex;
 }
 
 .square.clicked.player2 {
