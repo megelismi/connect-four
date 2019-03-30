@@ -34,10 +34,19 @@ code {
 }
 
 .checker {
+  cursor: pointer;
   height: 38px;
   width: 38px;
   border-radius: 50px;
   background-color: white;
+}
+
+.checker.yellow {
+  background-color: yellow;
+}
+
+.checker.red {
+  background-color: red;
 }
 
 .row {

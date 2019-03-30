@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import {
   scoreSheet,
@@ -31,7 +31,9 @@ class Gameboard extends React.Component {
     });
   }
 
-  didPlayerWin(scoreBoard, xPoint, yPoint) {
+  didPlayerWin(xPoint, yPoint) {
+    const scoreBoard = this.state.score[this.state.currentPlayer];
+
     return (
       checkForHorizVertWin("x", scoreBoard) ||
       checkForHorizVertWin("y", scoreBoard) ||
@@ -44,30 +46,44 @@ class Gameboard extends React.Component {
     console.log("recordingCheckerClick", "x", xPoint, "y", yPoint);
     const { score, currentPlayer } = this.state;
 
-    const newXPointValue = score[currentPlayer]["x"][xPoint]++;
-    const newYPointValue = score[currentPlayer]["y"][yPoint]++;
+    const newXPointValue = score[currentPlayer]["x"][xPoint] + 1;
+    const newYPointValue = score[currentPlayer]["y"][yPoint] + 1;
 
-    console.log("newXPointValue", newXPointValue);
-    console.log("newYPointValue", newYPointValue);
+    this.setState(
+      {
+        score: {
+          ...score,
+          [currentPlayer]: {
+            x: {
+              ...score[currentPlayer]["x"],
+              [xPoint]: newXPointValue
+            },
+            y: {
+              ...score[currentPlayer]["y"],
+              [yPoint]: newYPointValue
+            }
+          }
+        }
+      },
+      () => {
+        console.log("state now", this.state);
 
-    // this.setState(
-    //   {
-    //     score: {
-    //       ...score,
-    //       [currentPlayer]: {
-    //         x: {
-    //           ...score[currentPlayer].x,
-    //           [xPoint]: newXPointValue
-    //         },
-    //         y: {
-    //           ...score[currentPlayer].y,
-    //           [yPoint]: newXPointValue
-    //         }
-    //       }
-    //     }
-    //   },
-    //   () => !this.didPlayerWin() && this.togglePlayers()
-    // );
+        // !this.didPlayerWin(newXPointValue, newYPointValue) &&
+        this.togglePlayers();
+      }
+    );
+  }
+
+  getCheckerColor(xPoint, yPoint) {
+    const { score } = this.state;
+
+    if (score["1"]["x"][xPoint] && score["1"]["y"][yPoint]) {
+      return "yellow";
+    } else if (score["1"]["x"][xPoint] && score["1"]["y"][yPoint]) {
+      return "red";
+    }
+
+    return "";
   }
 
   getSlotsForRow(yPoint) {
@@ -81,7 +97,7 @@ class Gameboard extends React.Component {
           xPoint={xPoint}
           yPoint={yPoint}
           onCheckerClick={this.recordCheckerClick.bind(this)}
-          color=""
+          currentPlayer={this.state.currentPlayer}
         />
       );
 
@@ -111,7 +127,12 @@ class Gameboard extends React.Component {
   }
 
   render() {
-    return <div className="gameboard">{this.renderGameboard()}</div>;
+    return (
+      <Fragment>
+        It is player {this.state.currentPlayer}&#39;s turn!
+        <div className="gameboard">{this.renderGameboard()}</div>
+      </Fragment>
+    );
   }
 }
 
