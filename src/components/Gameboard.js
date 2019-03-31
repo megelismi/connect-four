@@ -2,11 +2,11 @@ import React, { Fragment } from "react";
 
 import {
   scoreSheet,
-  checkForDiagonalWins,
+  checkForDiagonalWin,
   checkForHorizVertWin
 } from "../handlers";
 
-import Checker from "./Checker";
+import CheckerSlot from "./CheckerSlot";
 
 class Gameboard extends React.Component {
   constructor(props) {
@@ -32,44 +32,53 @@ class Gameboard extends React.Component {
   }
 
   didPlayerWin(xPoint, yPoint) {
-    const scoreBoard = this.state.score[this.state.currentPlayer];
+    const scoreSheet = this.state.score[this.state.currentPlayer];
+
+    console.log(
+      "x win horizVert",
+      checkForHorizVertWin("x", xPoint, scoreSheet)
+    );
+    console.log(
+      "y win horizVert",
+      checkForHorizVertWin("y", yPoint, scoreSheet)
+    );
+    console.log(
+      "x win diagonal",
+      checkForDiagonalWin("x", xPoint, yPoint, scoreSheet)
+    );
+    console.log(
+      "y win diagonal",
+      checkForDiagonalWin("y", xPoint, yPoint, scoreSheet)
+    );
 
     return (
-      checkForHorizVertWin("x", scoreBoard) ||
-      checkForHorizVertWin("y", scoreBoard) ||
-      checkForDiagonalWins("x", xPoint, scoreBoard) ||
-      checkForDiagonalWins("y", yPoint, scoreBoard)
+      checkForHorizVertWin("x", xPoint, scoreSheet) ||
+      checkForHorizVertWin("y", yPoint, scoreSheet) ||
+      checkForDiagonalWin("x", xPoint, yPoint, scoreSheet) ||
+      checkForDiagonalWin("y", xPoint, yPoint, scoreSheet)
     );
   }
 
   recordCheckerClick(xPoint, yPoint) {
-    console.log("recordingCheckerClick", "x", xPoint, "y", yPoint);
     const { score, currentPlayer } = this.state;
-
-    const newXPointValue = score[currentPlayer]["x"][xPoint] + 1;
-    const newYPointValue = score[currentPlayer]["y"][yPoint] + 1;
 
     this.setState(
       {
         score: {
           ...score,
           [currentPlayer]: {
-            x: {
-              ...score[currentPlayer]["x"],
-              [xPoint]: newXPointValue
-            },
-            y: {
-              ...score[currentPlayer]["y"],
-              [yPoint]: newYPointValue
-            }
+            ...score[currentPlayer],
+            [`x${xPoint}y${yPoint}`]: 1
           }
         }
       },
       () => {
-        console.log("state now", this.state);
-
-        // !this.didPlayerWin(newXPointValue, newYPointValue) &&
-        this.togglePlayers();
+        console.log("state now", this.state.score[this.state.currentPlayer]);
+        if (this.didPlayerWin(xPoint, yPoint)) {
+          alert("Player won!");
+        } else {
+          this.togglePlayers();
+        }
       }
     );
   }
@@ -92,7 +101,7 @@ class Gameboard extends React.Component {
 
     while (xPoint <= 6) {
       checkerBoardRow.push(
-        <Checker
+        <CheckerSlot
           key={`slot-x${xPoint}-y${yPoint}`}
           xPoint={xPoint}
           yPoint={yPoint}

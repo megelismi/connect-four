@@ -5,8 +5,6 @@ const Checker = props => {
 
   const [color, setColor] = useState("");
 
-  console.log("xPoint", xPoint, "yPoint", yPoint, "color", color);
-
   const setCheckerColor = () => {
     if (currentPlayer === 1) {
       setColor("red");
